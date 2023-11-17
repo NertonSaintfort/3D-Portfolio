@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Development from "./Development";
+import ProductDesign from "./ProductDesign";
+import WebDesign from "./WebDesign";
 
 const data = [
   "Web Design",
@@ -14,17 +17,32 @@ const Section = styled.div`
   scroll-snap-align: center;
   display: flex;
   justify-content: center;
+  position: relative;
+  color: black;
+  font-size: 14px;
+  font-weight: 300;
 `;
+
 const Container = styled.div`
   width: 1400px;
   display: flex;
   justify-content: space-between;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+  }
 `;
+
 const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+
+  @media only screen and (max-width: 768px) {
+    padding: 20px;
+    justify-content: center;
+  }
 `;
 
 const List = styled.ul`
@@ -42,8 +60,6 @@ const ListItem = styled.li`
   -webkit-text-stroke: 1px white;
   position: relative;
 
-
-
   &::after {
     content: "${(props) => props.text}";
     position: absolute;
@@ -57,7 +73,7 @@ const ListItem = styled.li`
 
   &:hover {
     &::after {
-      animation: moveText 0.5s linear both;
+      animation: moveText 0.5s linear;
 
       @keyframes moveText {
         to {
@@ -73,20 +89,28 @@ const Right = styled.div`
 `;
 
 const Works = () => {
+  const [work, setWork] = useState("Web Design");
   return (
     <Section>
       <Container>
         <Left>
           <List>
             {data.map((item) => (
-              <ListItem key={item} text={item}>
+              <ListItem key={item} text={item} onClick={() => setWork(item)}>
                 {item}
               </ListItem>
             ))}
-            <ListItem></ListItem>
           </List>
         </Left>
-        <Right></Right>
+        <Right>
+          {work === "Web Design" ? (
+            <WebDesign />
+          ) : work === "Development" ? (
+            <Development />
+          ) : (
+            <ProductDesign />
+          )}
+        </Right>
       </Container>
     </Section>
   );
